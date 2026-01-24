@@ -137,8 +137,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="funcs.hpp" />
+    <ClInclude Include="grid.hpp" />
     <ClInclude Include="macros.hpp" />
     <ClInclude Include="stack.hpp" />
+    <ClInclude Include="structs.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

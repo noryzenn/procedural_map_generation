@@ -29,5 +29,11 @@
     <ClInclude Include="funcs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="structs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="grid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

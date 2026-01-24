@@ -1,7 +1,6 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 #include <string>
-#include <vector>
 #include "macros.hpp"
 
 class StackException {
