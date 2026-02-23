@@ -1,6 +1,5 @@
 #ifndef MACROS_HPP
 #define MACROS_HPP
-#include <vector>
 
 constexpr int WIDTH = 800;
 constexpr int HEIGHT = 600;

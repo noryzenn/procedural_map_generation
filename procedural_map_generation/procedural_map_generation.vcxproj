@@ -133,11 +133,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="funcs.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="funcs.hpp" />
-    <ClInclude Include="grid.hpp" />
+    <ClInclude Include="maze.hpp" />
     <ClInclude Include="macros.hpp" />
     <ClInclude Include="stack.hpp" />
     <ClInclude Include="structs.hpp" />
