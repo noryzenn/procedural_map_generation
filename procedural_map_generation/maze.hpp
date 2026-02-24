@@ -41,6 +41,8 @@ public:
 			Cell& start = getCell(startIndex);
 			rect.setPosition(start.col * CELL_SIZE, start.row * CELL_SIZE);
 			rect.setFillColor(sf::Color::Red);
+			rect.setOutlineColor(sf::Color::White);      // white border
+			rect.setOutlineThickness(1.0f);              // thickness of the border
 			window.draw(rect);
 		}
 		if (finishIndex != -1) {
@@ -48,6 +50,8 @@ public:
 			Cell& finish = getCell(finishIndex);
 			rect.setPosition(finish.col * CELL_SIZE, finish.row * CELL_SIZE);
 			rect.setFillColor(sf::Color::Green);
+			rect.setOutlineColor(sf::Color::White);      // white border
+			rect.setOutlineThickness(1.0f);              // thickness of the border
 			window.draw(rect);
 		}
 	}

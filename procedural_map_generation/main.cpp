@@ -30,6 +30,8 @@ int main() {
 				int col = mousePos.x / CELL_SIZE;
 				int row = mousePos.y / CELL_SIZE;
 
+				if (!maze.isValid(row, col)) continue;
+
 				if (!isStartSelected) {
 					maze.setStart(row, col);
 					isStartSelected = true;
