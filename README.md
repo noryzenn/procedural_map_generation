@@ -93,11 +93,16 @@ This section is currently under development and will be added soon.
 🏗 Project Structure
 .
 ├── main.cpp
+
 ├── maze.hpp
+
 ├── stack.hpp
+
 ├── structs.hpp
+
 ├── macros.hpp
-└── README.md
+
+└── Visual Studio Files
 Main Components
 
 Maze class → Handles grid logic, generation, drawing
