@@ -103,6 +103,7 @@ This section is currently under development and will be added soon.
 ├── macros.hpp
 
 └── Visual Studio Files
+
 Main Components
 
 Maze class → Handles grid logic, generation, drawing
