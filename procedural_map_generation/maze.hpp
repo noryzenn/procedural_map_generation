@@ -106,6 +106,16 @@ public:
 		}
 	}
 
+	inline void drawCell(const Cell& c, sf::RenderWindow& window, sf::Color color) {
+		int x = c.col * CELL_SIZE;
+		int y = c.row * CELL_SIZE;
+
+		sf::RectangleShape rect(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+		rect.setPosition(float(x), float(y));
+		rect.setFillColor(color);
+		window.draw(rect);
+	}
+
 	inline void drawGrid(sf::RenderWindow& window) {
 		for (int x = 0; x < COLS; x++) {
 			for (int y = 0; y < ROWS; y++) {
@@ -162,7 +172,9 @@ public:
 	inline void maze_generation(sf::RenderWindow& window) {
 
 		srand(time(NULL));
-		int currentIndex = 0;
+		int currentIndex{ 0 };
+		int neighbourIndex{ 0 };
+		bool isCurrent;
 		stack.push(currentIndex);
 		getCell(currentIndex).visited = true;
 		
@@ -172,19 +184,22 @@ public:
 			
 			if (neighbours.size()) {
 				
-				int neighbourIndex = neighbours[rand() % neighbours.size()];
+				neighbourIndex = neighbours[rand() % neighbours.size()];
 				removeWalls(getCell(currentIndex), getCell(neighbourIndex));
-			
 				getCell(neighbourIndex).visited = true;
 				stack.push(neighbourIndex);
+				isCurrent = false;
 			}
 			else {
 				stack.pop();
+				isCurrent = true;
 			}
 
 			window.clear(sf::Color::Black);
 			drawGrid(window);
+			drawCell(getCell(isCurrent ? currentIndex : neighbourIndex), window, sf::Color(255, 165, 0, 255));
 			window.display();
+			//sf::sleep(sf::milliseconds(50));
 		}
 
 		return;
