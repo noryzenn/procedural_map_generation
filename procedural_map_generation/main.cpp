@@ -11,6 +11,7 @@ int main() {
 	bool isStartSelected = false;
 	bool isFinishSelected = false;
 	bool isMazeCreated = false;
+	bool pathComputed = false;
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -45,10 +46,14 @@ int main() {
 		maze.drawGrid(window);
 		maze.drawStartFinish(window);
 		window.display();
-		
-		if(!isMazeCreated) maze.maze_generation(window);
-		isMazeCreated = true;
-	}
 
+		if (!isMazeCreated) maze.maze_generation(window);
+		isMazeCreated = true;
+
+		if (isStartSelected && isFinishSelected && !pathComputed) {
+			maze.djikstra(window);
+			pathComputed = true;
+		}
+	}
 	return 0;
 }

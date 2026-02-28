@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <queue>
+#include <climits>
+#include <algorithm>
 #include "structs.hpp"
 #include "macros.hpp"
 #include "stack.hpp"
@@ -14,6 +17,7 @@ private:
 	Stack<int> stack;
 	int startIndex = -1;
 	int finishIndex = -1;
+
 public:
 	Maze() {
 		grid.resize(MAX_SIZE);
@@ -34,35 +38,47 @@ public:
 
 	void setStart(int row, int col) { startIndex = getIndex(row, col); }
 	void setFinish(int row, int col) { finishIndex = getIndex(row, col); }
-	
+
+	inline bool isValid(int row, int col) const { return row >= 0 && row < ROWS && col >= 0 && col < COLS; }
+
 	void drawStartFinish(sf::RenderWindow& window) {
+
+		float padding = 2.0f;
+		sf::RectangleShape rect(sf::Vector2f(CELL_SIZE - padding, CELL_SIZE - padding));
+
 		if (startIndex != -1) {
-			sf::RectangleShape rect(sf::Vector2f(CELL_SIZE, CELL_SIZE));
 			Cell& start = getCell(startIndex);
-			rect.setPosition(start.col * CELL_SIZE, start.row * CELL_SIZE);
+
+			rect.setPosition(start.col * CELL_SIZE + (padding / 2), start.row * CELL_SIZE + (padding / 2));
 			rect.setFillColor(sf::Color::Red);
-			rect.setOutlineColor(sf::Color::White);      // white border
-			rect.setOutlineThickness(1.0f);              // thickness of the border
 			window.draw(rect);
 		}
 		if (finishIndex != -1) {
-			sf::RectangleShape rect(sf::Vector2f(CELL_SIZE, CELL_SIZE));
 			Cell& finish = getCell(finishIndex);
-			rect.setPosition(finish.col * CELL_SIZE, finish.row * CELL_SIZE);
+			rect.setPosition(finish.col * CELL_SIZE + (padding / 2), finish.row * CELL_SIZE + (padding / 2));
 			rect.setFillColor(sf::Color::Green);
-			rect.setOutlineColor(sf::Color::White);      // white border
-			rect.setOutlineThickness(1.0f);              // thickness of the border
 			window.draw(rect);
 		}
 	}
-
-	inline bool isValid(int row, int col) const { return row >= 0 && row < ROWS && col >= 0 && col < COLS; }
 
 	inline void drawCell(const Cell& c, sf::RenderWindow& window) {
 		int x = c.col * CELL_SIZE;
 		int y = c.row * CELL_SIZE;
 
-		if (c.visited) {
+		if (c.path) {
+			sf::RectangleShape rect(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+			rect.setPosition(float(x), float(y));
+			rect.setFillColor(sf::Color(227, 38, 54, 255));
+			window.draw(rect);
+		}
+		else if (c.visited_djikstra) {
+			sf::RectangleShape rect(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+			rect.setPosition(float(x), float(y));
+			rect.setFillColor(sf::Color(255, 165, 0, 150));
+			window.draw(rect);
+		}
+
+		else if (c.visited) {
 			sf::RectangleShape rect(sf::Vector2f(CELL_SIZE, CELL_SIZE));
 			rect.setPosition(float(x), float(y));
 			rect.setFillColor(sf::Color(100, 100, 100));
@@ -119,7 +135,7 @@ public:
 	inline void drawGrid(sf::RenderWindow& window) {
 		for (int x = 0; x < COLS; x++) {
 			for (int y = 0; y < ROWS; y++) {
-				drawCell(getCell(getIndex(y,x)), window);
+				drawCell(getCell(getIndex(y, x)), window);
 			}
 		}
 	}
@@ -141,7 +157,7 @@ public:
 		}
 
 		// Left
-		if (isValid(r, c - 1) && !getCell(getIndex(r, c - 1)).visited){
+		if (isValid(r, c - 1) && !getCell(getIndex(r, c - 1)).visited) {
 			neighbours.push_back(getIndex(r, c - 1));
 		}
 
@@ -149,14 +165,14 @@ public:
 		if (isValid(r, c + 1) && !getCell(getIndex(r, c + 1)).visited) {
 			neighbours.push_back(getIndex(r, c + 1));
 		}
-		
+
 		return neighbours;
 	}
 
 	inline void removeWalls(Cell& current, Cell& neighbour) {
 		int dx = current.col - neighbour.col;
 		int dy = current.row - neighbour.row;
-		
+
 		Wall direction;
 		if (dx == 1) direction = LEFT;
 		else if (dx == -1) direction = RIGHT;
@@ -177,13 +193,13 @@ public:
 		bool isCurrent;
 		stack.push(currentIndex);
 		getCell(currentIndex).visited = true;
-		
+
 		while (!stack.isEmpty()) {
 			currentIndex = stack.peek();
 			std::vector<int> neighbours = getUnvisitedNeighbours(currentIndex);
-			
+
 			if (neighbours.size()) {
-				
+
 				neighbourIndex = neighbours[rand() % neighbours.size()];
 				removeWalls(getCell(currentIndex), getCell(neighbourIndex));
 				getCell(neighbourIndex).visited = true;
@@ -194,17 +210,101 @@ public:
 				stack.pop();
 				isCurrent = true;
 			}
-
-			window.clear(sf::Color::Black);
-			drawGrid(window);
-			drawCell(getCell(isCurrent ? currentIndex : neighbourIndex), window, sf::Color(255, 165, 0, 255));
-			window.display();
-			//sf::sleep(sf::milliseconds(50));
 		}
 
+		window.clear(sf::Color::Black);
+		drawGrid(window);
+		drawCell(getCell(isCurrent ? currentIndex : neighbourIndex), window, sf::Color(255, 165, 0, 255));
+		drawStartFinish(window);
+		window.display();
 		return;
 	}
-};
 
+	std::vector<int> getAccesibleNeighbours(int index) {
+		std::vector<int> neighbours;
+		Cell& current = getCell(index);
+		int r = current.row;
+		int c = current.col;
+
+		// TOP 
+		if (isValid(r - 1, c) && !getCell(getIndex(r - 1, c)).visited_djikstra && !current.walls[TOP]) {
+			neighbours.push_back(getIndex(r - 1, c));
+		}
+
+		// BOTTOM
+		if (isValid(r + 1, c) && !getCell(getIndex(r + 1, c)).visited_djikstra && !current.walls[BOTTOM]) {
+			neighbours.push_back(getIndex(r + 1, c));
+		}
+
+		// LEFT
+		if (isValid(r, c - 1) && !getCell(getIndex(r, c - 1)).visited_djikstra && !current.walls[LEFT]) {
+			neighbours.push_back(getIndex(r, c - 1));
+		}
+
+		// RIGHT
+		if (isValid(r, c + 1) && !getCell(getIndex(r, c + 1)).visited_djikstra && !current.walls[RIGHT]) {
+			neighbours.push_back(getIndex(r, c + 1));
+		}
+
+		return neighbours;
+	}
+
+	std::vector<int> reconstructPath() {
+		std::vector<int> path;
+		int currentIndex = finishIndex;
+		while (currentIndex != -1) {
+			getCell(currentIndex).path = true;
+			path.push_back(currentIndex);
+			currentIndex = getCell(currentIndex).previous;
+		}
+
+		std::reverse(path.begin(), path.end());
+		return path;
+	}
+
+	
+
+	void djikstra(sf::RenderWindow& window) {
+
+		std::priority_queue<
+			std::pair<int, int>,
+			std::vector<std::pair<int, int>>,
+			std::greater<std::pair<int, int>>
+		> pq;
+
+		getCell(startIndex).distance = 0;
+		pq.push({ 0, startIndex });
+
+		while (!pq.empty()) {
+			auto [dist, currentIndex] = pq.top();
+			pq.pop();
+
+			Cell& current = getCell(currentIndex);
+			if (current.visited_djikstra) continue;
+			current.visited_djikstra = true;
+			window.clear(sf::Color::Black);
+			drawGrid(window);
+			drawStartFinish(window);
+			window.display();
+
+			if (currentIndex == finishIndex) break;
+
+			for (int neighbourIndex : getAccesibleNeighbours(currentIndex)) {
+				Cell& neighbour = getCell(neighbourIndex);
+				int newDist = current.distance + 1;
+				if (newDist < neighbour.distance) {
+					neighbour.distance = newDist;
+					neighbour.previous = currentIndex;
+					pq.push({ newDist, neighbourIndex });
+				}
+			}
+		}
+
+		reconstructPath();
+		window.clear(sf::Color::Black);
+		drawGrid(window);
+		window.display();
+	}
+};
 
 #endif

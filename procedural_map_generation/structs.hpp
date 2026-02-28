@@ -19,7 +19,14 @@ struct Cell {
 	bool visited = false;
 	bool walls[4] = { true, true, true, true };
 
-	Cell() : row(0), col(0) {}
+	// Djikstra Part
+
+	bool visited_djikstra = false;
+	bool path = false;
+	int distance;
+	int previous;
+
+	Cell() : row(0), col(0), distance(INT_MAX), previous(-1) {}
 };
 
 
