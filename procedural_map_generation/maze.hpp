@@ -190,7 +190,6 @@ public:
 		srand(time(NULL));
 		int currentIndex{ 0 };
 		int neighbourIndex{ 0 };
-		bool isCurrent;
 		stack.push(currentIndex);
 		getCell(currentIndex).visited = true;
 
@@ -205,20 +204,26 @@ public:
 				removeWalls(getCell(currentIndex), getCell(neighbourIndex));
 				getCell(neighbourIndex).visited = true;
 				stack.push(neighbourIndex);
-				isCurrent = false;
-
-				// COMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
-				window.clear(sf::Color::Black);
-				drawGrid(window);
-				drawCell(getCell(isCurrent ? currentIndex : neighbourIndex), window, sf::Color(255, 165, 0, 255));
-				window.display();
-				// COMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
+				
 			}
 			else {
 				stack.pop();
-				isCurrent = true;
 			}
+
+			// COMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
+
+			window.clear(sf::Color::Black);
+			drawGrid(window);
+
+			if (!stack.isEmpty()) {
+				drawCell(getCell(stack.peek()), window, sf::Color(255, 165, 0, 255));
+			}
+
+			window.display();
+
+			// COMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
 		}
+
 
 		// UNCOMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
 		

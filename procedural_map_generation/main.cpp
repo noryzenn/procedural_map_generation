@@ -14,6 +14,7 @@ int main() {
 	bool pathComputed = false;
 	bool solveMaze = false;
 
+
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
