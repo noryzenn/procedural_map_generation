@@ -12,6 +12,7 @@ int main() {
 	bool isFinishSelected = false;
 	bool isMazeCreated = false;
 	bool pathComputed = false;
+	bool solveMaze = false;
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -21,6 +22,7 @@ int main() {
 			}
 			if (event.type == sf::Event::KeyPressed) {
 				if (event.key.code == sf::Keyboard::Escape) window.close();
+				if (event.key.code == sf::Keyboard::S) solveMaze = true;
 			}
 
 			if (isMazeCreated && event.type == sf::Event::MouseButtonPressed) {
@@ -50,7 +52,7 @@ int main() {
 		if (!isMazeCreated) maze.maze_generation(window);
 		isMazeCreated = true;
 
-		if (isStartSelected && isFinishSelected && !pathComputed) {
+		if (isStartSelected && isFinishSelected && !pathComputed && solveMaze) {
 			maze.djikstra(window);
 			pathComputed = true;
 		}
