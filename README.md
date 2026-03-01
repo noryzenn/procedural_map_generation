@@ -1,155 +1,125 @@
-🧩 Maze Generator & Pathfinding Visualizer (C++ / SFML)
+# 🧩 Maze Generator & Pathfinding Visualizer (C++ / SFML)
 
 A visual maze generation and pathfinding project built using C++ and SFML.
 
-This project demonstrates:
+This project demonstrates algorithmic maze generation and shortest-path finding with real-time, step-by-step visualization. It allows users to watch the computer carve out a perfect maze, interactively select their start and finish points, and watch Dijkstra's algorithm hunt for the most efficient route.
 
-Recursive Backtracking (DFS-based) Maze Generation
+## 🎥 Demos
 
-Step-by-step Visualization of the Algorithm
+**Part 1: Maze Generation** 📌 A video showcasing the Recursive Backtracking generation process step-by-step.
 
-Interactive Start & Finish Selection
-
-(Upcoming) Dijkstra’s Shortest Path Algorithm
-
-A demonstration video of the maze generation process is included in this repository.
-
-🎥 Demo
-
-📌 A video showcasing the maze generation process step-by-step is attached in this repository.
+https://github.com/user-attachments/assets/61156c85-00ab-4ce3-bcb0-a7358b895ac1
 
 
 
-https://github.com/user-attachments/assets/6972e2f5-717e-453e-ae44-c7553d5d181e
+**Part 2: Dijkstra's Pathfinding** 📌 A video showcasing the shortest path search and path reconstruction.
+
+
+https://github.com/user-attachments/assets/96ea997c-0b7e-4e48-80bd-ef9a58bd4e76
 
 
 
-📌 Project Overview
+---
 
-This project is divided into two main parts:
+## 🎮 Interactive Controls
 
-🟢 Part 1 — Maze Generation (Completed ✅)
+Once the maze is fully generated, you can interact with the grid:
 
-The maze is generated using the Recursive Backtracking algorithm (Depth-First Search with a stack).
+* **Left Click (1st time):** Sets the **Start** point (Red).
+* **Left Click (2nd time):** Sets the **Finish** point (Green).
+* **Press `S`:** Starts the Dijkstra Pathfinding visualization.
+* **Press `ESC`:** Closes the window.
 
-🔎 How It Works
+---
 
-Start from the first cell.
+## 📌 Project Overview
 
-Mark the current cell as visited.
+This project is divided into two main, fully completed parts:
 
-Randomly select one unvisited neighbour.
+### 🟢 Part 1 — Maze Generation (Completed ✅)
 
-Remove the wall between current and neighbour.
+The maze is generated using the **Recursive Backtracking** algorithm (Depth-First Search with a stack). It creates a "perfect maze" (a maze with no loops and exactly one path between any two cells).
 
-Push the neighbour onto the stack.
+**🔎 How It Works:**
 
-Repeat until all cells are visited.
+1. Start from the first cell and mark it as visited.
+2. Randomly select one unvisited neighboring cell.
+3. Remove the wall between the current cell and the neighbor.
+4. Push the neighbor onto the stack and move to it.
+5. If a cell has no unvisited neighbors, backtrack using the stack.
+6. Repeat until all cells are visited.
 
-If a cell has no unvisited neighbours, the algorithm backtracks using the stack.
+**✨ Features:**
 
-✨ Features
+* Real-time visualization of the generation process.
+* Visited cells are colored grey, and the active cell is highlighted.
+* Walls are dynamically removed on screen.
 
-Real-time visualization of the generation process
+### 🔵 Part 2 — Dijkstra’s Algorithm (Completed ✅)
 
-Visited cells are colored (grey)
+Finds the absolute shortest path between the user-selected start and finish cells using a **Priority Queue**.
 
-Walls are dynamically removed
+**🔎 How It Works:**
 
-Start and finish points can be selected with mouse clicks
+1. Assigns a distance value to every cell (infinity initially, 0 for the start cell).
+2. Explores unvisited accessible neighbors (where walls don't block the path) starting from the lowest distance.
+3. Updates the neighbors' distances and records the "previous" cell to remember the path.
+4. Once the finish cell is reached, it backtracks through the "previous" cell records to reconstruct and draw the final shortest path.
 
-Clean grid-based architecture
+**✨ Features:**
 
-🧠 Core Concepts Used
+* Step-by-step visualization of the search radius (explored cells highlighted in orange).
+* Accounts for generated walls (will not cross unbroken wall lines).
+* Final shortest path is reconstructed and painted red.
 
-Depth-First Search (DFS)
+---
 
-Stack-based backtracking
+## 🏗 Project Structure
 
-Grid indexing (2D → 1D mapping)
-
-Object-oriented design
-
-SFML rendering
-
-🔵 Part 2 — Dijkstra’s Algorithm (In Progress 🚧)
-
-The next phase of this project is implementing Dijkstra’s Shortest Path Algorithm to find the shortest path between the selected start and finish cells.
-
-🎯 Planned Features:
-
-Step-by-step visualization
-
-Distance tracking for each cell
-
-Priority-based exploration
-
-Path reconstruction and highlighting
-
-Final shortest path animation
-
-This section is currently under development and will be added soon.
-
-🏗 Project Structure
+```text
 .
-├── main.cpp
+├── main.cpp        # Entry point, event handling, and main loop
+├── maze.hpp        # Maze class: grid logic, generation, pathfinding, drawing
+├── stack.hpp       # Custom Stack implementation for DFS backtracking
+├── structs.hpp     # Cell structure (walls, visited states, row/col mapping)
+├── macros.hpp      # Constants (CELL_SIZE, ROWS, COLS, directions)
+└── CMakeLists.txt
 
-├── maze.hpp
+```
 
-├── stack.hpp
+---
 
-├── structs.hpp
+## 🛠 Technologies & Concepts Used
 
-├── macros.hpp
+* **C++**
+* **SFML** (Simple and Fast Multimedia Library) for 2D rendering.
+* **Graph Traversal Algorithms:** Depth-First Search (DFS) & Dijkstra's Algorithm.
+* **Data Structures:** Stacks, Vectors, and Priority Queues.
+* **Grid Mathematics:** 2D (row/col) to 1D array index mapping.
 
-└── Visual Studio Files
+---
 
-Main Components
+## 🚀 How to Run
 
-Maze class → Handles grid logic, generation, drawing
+1. **Install SFML:** Ensure you have the SFML library installed and configured on your system.
+2. **Clone the repository:**
+```bash
+git clone https://github.com/noryzenn/procedural_map_generation.git
 
-Stack class → Used for DFS backtracking
-
-Cell struct → Stores cell state (walls, visited, row, col)
-
-SFML → Rendering and visualization
-
-🛠 Technologies Used
-
-C++
-
-SFML (Simple and Fast Multimedia Library)
-
-Object-Oriented Programming
-
-🚀 How to Run
-
-Install SFML
-
-Clone the repository:
-
-git clone github.com/noryzenn/procedural_map_generation
-
-Build and run using your preferred C++ compiler with SFML linked.
-
-📈 Future Improvements
-
-Complete Dijkstra implementation
-
-Animated shortest-path drawing
+```
 
 
-💡 Author Notes
+3. **Build and Run:** Compile the project using your preferred C++ compiler, making sure to link the SFML Graphics, Window, and System modules.
 
-This project was built to strengthen understanding of:
+---
 
-Graph traversal algorithms
+## 💡 Author Notes
 
-Algorithm visualization
+This project was built to strengthen my understanding of:
 
-Clean class architecture
+* Graph traversal algorithms
+* Algorithm visualization
+* Clean class architecture
+* Real-time rendering loops
 
-Real-time rendering loops
-
-The maze generation phase is fully functional.
-Dijkstra implementation is coming next.
+---
