@@ -197,6 +197,7 @@ public:
 		while (!stack.isEmpty()) {
 			currentIndex = stack.peek();
 			std::vector<int> neighbours = getUnvisitedNeighbours(currentIndex);
+			
 
 			if (neighbours.size()) {
 
@@ -205,6 +206,13 @@ public:
 				getCell(neighbourIndex).visited = true;
 				stack.push(neighbourIndex);
 				isCurrent = false;
+
+				// COMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
+				window.clear(sf::Color::Black);
+				drawGrid(window);
+				drawCell(getCell(isCurrent ? currentIndex : neighbourIndex), window, sf::Color(255, 165, 0, 255));
+				window.display();
+				// COMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
 			}
 			else {
 				stack.pop();
@@ -212,11 +220,17 @@ public:
 			}
 		}
 
+		// UNCOMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
+		
+		/* 
 		window.clear(sf::Color::Black);
 		drawGrid(window);
 		drawCell(getCell(isCurrent ? currentIndex : neighbourIndex), window, sf::Color(255, 165, 0, 255));
-		drawStartFinish(window);
-		window.display();
+		window.display(); 
+		*/
+
+		// UNCOMMENT THIS PART IF YOU DESIRE MOMENTARY VISUALIZATION
+
 		return;
 	}
 
