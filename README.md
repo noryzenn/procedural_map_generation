@@ -68,10 +68,10 @@ Finds the absolute shortest path between the user-selected start and finish cell
 ### Prerequisites
 
 * **CMake** (v3.15+)
-* **C++20 Compiler**
+* **C++20 Compiler** (MSVC, GCC, or Clang)
 * **SFML 2.6.x**
 
-### Option 1: Using vcpkg (Recommended)
+### 🪟 Windows (Using vcpkg)
 
 1. **Install SFML:**
 ```powershell
@@ -90,12 +90,37 @@ cmake --build build --config Release
 
 
 
-### Option 2: Manual SFML Installation
+### 🐧 Linux (Ubuntu/Debian)
 
-1. **Build the project:**
-```powershell
-cmake -S . -B build -G "Visual Studio 18 2026" -DSFML_DIR="C:/SFML-2.6.1/lib/cmake/SFML"
-cmake --build build --config Release
+1. **Install SFML:**
+```bash
+sudo apt-get install libsfml-dev
+
+```
+
+
+2. **Build the project:**
+```bash
+cmake -S . -B build
+cmake --build build
+
+```
+
+
+
+### 🍎 macOS
+
+1. **Install SFML:**
+```bash
+brew install sfml
+
+```
+
+
+2. **Build the project:**
+```bash
+cmake -S . -B build
+cmake --build build
 
 ```
 
