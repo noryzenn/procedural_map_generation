@@ -83,7 +83,7 @@ Finds the absolute shortest path between the user-selected start and finish cell
 ├── stack.hpp       # Custom Stack implementation for DFS backtracking
 ├── structs.hpp     # Cell structure (walls, visited states, row/col mapping)
 ├── macros.hpp      # Constants (CELL_SIZE, ROWS, COLS, directions)
-└── Visual Studio Files
+└── CMakeLists.txt
 
 ```
 
