@@ -187,7 +187,7 @@ public:
 
 	inline void maze_generation(sf::RenderWindow& window) {
 
-		srand(time(NULL));
+		srand(static_cast<unsigned int>(time(NULL)));
 		int currentIndex{ 0 };
 		int neighbourIndex{ 0 };
 		stack.push(currentIndex);
