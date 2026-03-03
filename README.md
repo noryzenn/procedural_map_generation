@@ -71,6 +71,11 @@ Finds the absolute shortest path between the user-selected start and finish cell
 * **C++20 Compiler** (MSVC, GCC, or Clang)
 * **SFML 2.6.x**
 
+**Clone the repository:**
+```
+git clone https://github.com/noryzenn/MazeGenSolve.git
+```
+
 ### 🪟 Windows (Using vcpkg)
 
 1. **Install SFML:**
